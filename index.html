@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    // 检测用户的操作系统
+    function detectOS() {
+        const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+        if (/android/i.test(userAgent)) {
+            return "Android";
+        }
+        if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+            return "iOS";
+        }
+        return "Unknown";
+    }
+
+    // 创建并唤醒地图应用
+    function openMap() {
+        const os = detectOS();
+
+        if (os === "iOS") {
+            // iOS设备
+            const latitude = "39.9042";
+            const longitude = "116.4074";
+            const url = `maps://maps.apple.com/?q=${latitude},${longitude}`;
+
+            window.location.href = url; // 打开iOS地图
+        } else if (os === "Android") {
+            // Android设备
+            const latitude = "39.9042";
+            const longitude = "116.4074";
+
+            // 高德地图链接
+            const amapURL = `androidamap://viewMap?sourceApplication=yourAppName&poiname=POI名称&lat=${latitude}&lon=${longitude}&dev=0`;
+
+            // 百度地图链接
+            const baiduURL = `baidumap://map/marker?location=${latitude},${longitude}&title=POI名称&content=描述信息&src=yourAppName`;
+
+            // 优先使用高德地图，如果没有安装高德地图，则使用百度地图
+            if (window.location.href = amapURL) {
+                window.location.href = amapURL;
+            } else {
+                window.location.href = baiduURL;
+            }
+        } else {
+            alert("不支持的操作系统");
+        }
+    }
+
+    // 调用唤醒地图函数
+    openMap();
+
+</script>
+</body>
+</html>
