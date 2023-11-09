@@ -6,6 +6,10 @@
 </head>
 <body>
 <script>
+    // 获取URL中的name参数
+    const urlParams = new URLSearchParams(window.location.search);
+    const name = urlParams.get('name');
+
     // 检测用户的操作系统
     function detectOS() {
         const userAgent = navigator.userAgent || navigator.vendor || window.opera;
@@ -24,21 +28,12 @@
 
         if (os === "iOS") {
             // iOS设备
-            const latitude = "39.9042";
-            const longitude = "116.4074";
-            const url = `maps://maps.apple.com/?q=${latitude},${longitude}`;
-
+            const url = `https://maps.apple.com/?q=${name}`; // 使用Apple Maps打开指定地址
             window.location.href = url; // 打开iOS地图
         } else if (os === "Android") {
             // Android设备
-            const latitude = "39.9042";
-            const longitude = "116.4074";
-
-            // 高德地图链接
-            const amapURL = `androidamap://viewMap?sourceApplication=yourAppName&poiname=POI名称&lat=${latitude}&lon=${longitude}&dev=0`;
-
-            // 百度地图链接
-            const baiduURL = `baidumap://map/marker?location=${latitude},${longitude}&title=POI名称&content=描述信息&src=yourAppName`;
+            const amapURL = `androidamap://search?keyword=${name}`; // 使用高德地图搜索指定地址
+            const baiduURL = `baidumap://search?keyword=${name}`; // 使用百度地图搜索指定地址
 
             // 优先使用高德地图，如果没有安装高德地图，则使用百度地图
             if (window.location.href = amapURL) {
@@ -53,7 +48,6 @@
 
     // 调用唤醒地图函数
     openMap();
-
 </script>
 </body>
 </html>
