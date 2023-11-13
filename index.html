@@ -12,8 +12,6 @@
     }
     img{
         width: 100%;
-        /*max-width: 100%;*/
-        /*min-width: 300px;*/
         margin: auto;
     }
 </style>
@@ -44,25 +42,19 @@
         if (os === "iOS") {
             // iOS设备
             const url = `https://maps.apple.com/?q=${name}`; // 使用Apple Maps打开指定地址
-            window.location.href = url; // 打开iOS地图
+            window.open(url, '_blank'); // 在新窗口或标签中打开iOS地图链接
         } else if (os === "Android") {
             // Android设备
-            const amapURL = `androidamap://search?keyword=${name}`; // 使用高德地图搜索指定地址
-            const baiduURL = `baidumap://search?keyword=${name}`; // 使用百度地图搜索指定地址
+            const amapURL = `https://uri.amap.com/search?keyword=${name}`; // 使用高德地图Web链接搜索指定地址
+            const baiduURL = `https://map.baidu.com/search?q=${name}`; // 使用百度地图Web链接搜索指定地址
 
             // 优先使用高德地图，如果没有安装高德地图，则使用百度地图
-            if (window.location.href === amapURL) {
-                window.location.href = amapURL;
-            } else {
-                window.location.href = baiduURL;
-            }
+            window.open(amapURL || baiduURL, '_blank'); // 在新窗口或标签中打开高德地图或百度地图链接
         } else {
             alert("不支持的操作系统");
         }
     }
-
-    // 调用唤醒地图函数
-    openMap();
+    openMap()
 </script>
 </body>
 </html>
