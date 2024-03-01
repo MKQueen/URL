@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    body{
+        background: #EBF4FF;
+        width: 100%;
+        min-height: 800px;
+    }
+    img{
+        width: 100%;
+        margin: auto;
+    }
+</style>
+<body>
+<img src="img/background.png" alt="">
+<script>
+    // 获取URL中的name参数
+    const urlParams = new URLSearchParams(window.location.search);
+    const name = urlParams.get('name');
+
+    // 检测用户的操作系统
+    function detectOS() {
+        const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+        if (/android/i.test(userAgent)) {
+            return "Android";
+        }
+        if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+            return "iOS";
+        }
+        return "Unknown";
+    }
+
+    // 创建并唤醒地图应用
+    function openMap() {
+        const os = detectOS();
+        console.log(os)
+
+        if (os === "iOS") {
+            // iOS设备
+            const url = `https://maps.apple.com/?q=${name}`; // 使用Apple Maps打开指定地址
+            window.location.href = url;
+        } else if (os === "Android") {
+            // Android设备
+            const amapURL = `https://uri.amap.com/search?keyword=${name}`; // 使用高德地图Web链接搜索指定地址
+            const baiduURL = `https://map.baidu.com/search?q=${name}`; // 使用百度地图Web链接搜索指定地址
+
+            // 优先使用高德地图，如果没有安装高德地图，则使用百度地图
+            const mapURL = amapURL || baiduURL;
+            window.location.href = mapURL;
+        } else {
+            alert("不支持的操作系统");
+        }
+    }
+    openMap()
+</script>
+</body>
+</html>
