@@ -41,46 +41,25 @@
                     facingMode: { exact: 'environment' }
                 }
             })
+
                 .then((stream) => {
                     video.srcObject = stream;
                     video.addEventListener('loadeddata', () => {
-                        const tracker = new tracking.ObjectTracker(['face']); // 可以添加需要跟踪的对象类型，如 ['face', 'person', 'car']
-                        tracker.setInitialScale(4);
-                        tracker.setStepSize(2);
-                        tracker.setEdgesDensity(0.1);
-
-                        tracking.track('#video', tracker);
-
-                        setInterval(() => {
+                        setInterval(async () => {
                             context.clearRect(0, 0, canvas.width, canvas.height);
                             context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-                            tracker.on('track', (event) => {
-                                event.data.forEach((rect) => {
-                                    context.strokeStyle = 'red';
-                                    context.lineWidth = 2;
-                                    context.beginPath();
-                                    context.rect(rect.x, rect.y, rect.width, rect.height);
-                                    context.stroke();
+                            const predictions = await model.detect(video);
+                            predictions.forEach(prediction => {
+                                context.strokeStyle = 'red';
+                                context.lineWidth = 2;
+                                context.beginPath();
+                                context.rect(prediction.bbox[0], prediction.bbox[1], prediction.bbox[2], prediction.bbox[3]);
+                                context.stroke();
 
-                                    context.fillStyle = 'red';
-                                    context.font = '16px Arial';
-                                    context.fillText('识别内容: YourResult', rect.x, rect.y - 5);
-                                });
-                            });
-
-                            model.detect(video).then(predictions => {
-                                predictions.forEach(prediction => {
-                                    context.strokeStyle = 'red';
-                                    context.lineWidth = 2;
-                                    context.beginPath();
-                                    context.rect(prediction.bbox[0], prediction.bbox[1], prediction.bbox[2], prediction.bbox[3]);
-                                    context.stroke();
-
-                                    context.fillStyle = 'red';
-                                    context.font = '16px Arial';
-                                    context.fillText('识别内容: ' + prediction.class, prediction.bbox[0], prediction.bbox[1] - 5);
-                                });
+                                context.fillStyle = 'red';
+                                context.font = '16px Arial';
+                                context.fillText('识别内容: ' + prediction.class, prediction.bbox[0], prediction.bbox[1] - 5);
                             });
                         }, 1000 / 60);
                     });
