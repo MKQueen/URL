@@ -12,9 +12,6 @@
 <style>
     video{
         /*opacity: 0;*/
-        position: relative;
-        z-index: 1;
-        top: 0;
         width: 100%;
         height: 100%;
     }
@@ -34,6 +31,7 @@
     const video = document.getElementById('video');
     const canvas = document.getElementById('canvas');
     const context = canvas.getContext('2d');
+    context.imageSmoothingEnabled = true; // 或者 false，具体根据需求调整
 
     // 明确指定使用 "face" 分类器
     const tracker = new tracking.ObjectTracker("face");
