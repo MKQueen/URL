@@ -15,16 +15,14 @@
         position: relative;
         z-index: 1;
         top: 0;
-        width: 100vw;
-        height: 100vh;
+        width: 100%;
+        height: 100%;
     }
     #canvas{
-        position: absolute;
-        z-index: 999;
-        top: 0;
-        width: 430px;
-        height: 932px;
-        opacity: 0;
+
+        width: 100%;
+        height: 300px;
+        /*opacity: 0;*/
 
     }
 </style>
@@ -47,9 +45,7 @@
         // navigator.mediaDevices.getUserMedia({ video: true })
         navigator.mediaDevices.getUserMedia({
             video: {
-                facingMode: 'environment',
-                width: { ideal: 430 },
-                height: { ideal: 932 }
+                facingMode: 'environment'
             }
         })
                 .then((stream) => {
@@ -89,7 +85,7 @@
                                 context.fillText('识别内容: ' + prediction.class, prediction.bbox[0], prediction.bbox[1] - 5);
                             });
                         });
-                    }, 1000 / 10);
+                    }, 1000 / 60);
                 });
             })
             .catch((error) => {
