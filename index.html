@@ -22,8 +22,8 @@
         position: absolute;
         z-index: 999;
         top: 0;
-        width: 100vw;
-        height: 100vh;
+        width: 430px;
+        height: 932px;
 
     }
 </style>
@@ -44,9 +44,14 @@
 
     cocoSsd.load().then(model => {
         // navigator.mediaDevices.getUserMedia({ video: true })
-        navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
-
-            .then((stream) => {
+        navigator.mediaDevices.getUserMedia({
+            video: {
+                facingMode: 'environment',
+                width: { ideal: 430 },
+                height: { ideal: 932 }
+            }
+        })
+                .then((stream) => {
                 video.srcObject = stream;
                 video.addEventListener('loadeddata', () => {
                     tracking.track('#video', tracker);
@@ -83,7 +88,7 @@
                                 context.fillText('识别内容: ' + prediction.class, prediction.bbox[0], prediction.bbox[1] - 5);
                             });
                         });
-                    }, 1000 / 15);
+                    }, 1000 / 60);
                 });
             })
             .catch((error) => {
